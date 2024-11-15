@@ -160,7 +160,6 @@ app.post("/api/books", upload.single("image"), (req, res)=>{
       }
     
       const book = {
-        id:books.length + 1,
         name:req.body.name,
         author:req.body.author,
         summary:req.body.summary,
@@ -181,7 +180,6 @@ app.post("/api/books", upload.single("image"), (req, res)=>{
     
 const validateBook = (book)=>{
       const schema = Joi.object({
-        id:Joi.allow(""),
         name:Joi.string().min(2).required(),
         author:Joi.string().min(4).required(),
         summary:Joi.string().min(12).required(),
