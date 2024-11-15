@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const joi = require("joi");
+const Joi = require("joi");
 app.use(cors());
 app.use(express.static("public"));
 const multer = require("multer");
@@ -148,7 +148,7 @@ app.get("/api/books", (req,res)=>{
     res.json(books);
 });
 
-app.post("/api/books", upload.single("img"), (req, res)=>{
+app.post("/api/books", upload.single("image"), (req, res)=>{
       console.log("In a post request");
     
       const result = validateBook(req.body);
@@ -182,10 +182,10 @@ app.post("/api/books", upload.single("img"), (req, res)=>{
 const validateBook = (book)=>{
       const schema = Joi.object({
         id:Joi.allow(""),
-        name:Joi.string().min(8).required(),
-        author:Joi.string().min(8).required(),
-        summary:Joi.string().min(8).required(),
-        availability:Joi.string().min(8).required(),
+        name:Joi.string().min(2).required(),
+        author:Joi.string().min(4).required(),
+        summary:Joi.string().min(12).required(),
+        availability:Joi.string().min(4).required(),
         cite:Joi.string().min(8).required(),
         expiration:Joi.string().min(8).required()
       });
