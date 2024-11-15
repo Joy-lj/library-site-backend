@@ -160,6 +160,7 @@ app.post("/api/books", upload.single("image"), (req, res)=>{
       }
     
       const book = {
+        id:books.length + 1,
         name:req.body.name,
         author:req.body.author,
         summary:req.body.summary,
