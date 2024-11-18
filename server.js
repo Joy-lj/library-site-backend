@@ -155,6 +155,7 @@ app.post("/api/books", upload.single("image"), (req, res)=>{
     
       if(result.error){
         res.status(400).send(result.error.details[0].message);
+        console.error(result.error.details);
         console.log("I have an error");
         return;
       }
@@ -182,11 +183,11 @@ app.post("/api/books", upload.single("image"), (req, res)=>{
 const validateBook = (book)=>{
       const schema = Joi.object({
         name:Joi.string().min(2).required(),
-        author:Joi.string().min(4).required(),
-        summary:Joi.string().min(12).required(),
-        availability:Joi.string().min(4).required(),
-        cite:Joi.string().min(8).required(),
-        expiration:Joi.string().min(8).required()
+        author:Joi.string().min(2).required(),
+        summary:Joi.string().min(2).required(),
+        availability:Joi.string().min(2).required(),
+        cite:Joi.string().min(2).required(),
+        expiration:Joi.string().min(2).required()
       });
     
       return schema.validate(book);
