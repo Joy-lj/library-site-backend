@@ -180,6 +180,48 @@ app.post("/api/books", upload.single("image"), (req, res)=>{
       res.status(200).send(book);
 });
     
+app.put("/api/books/:id", upload.single("image"), (req,res)=>{
+      const book = books.find((book)=>book.id ===parseInt(req.params.id));
+    
+      if(!book){
+        res.status(404).send("The book with the provided id was not found");
+        return;
+      }
+    
+      const result = validateBook(req.body);
+    
+      if(result.error){
+        res.status(400).send(result.error.details[0].message);
+        return;
+      }
+    
+      book.name = req.body.name;
+      book.author = req.body.author;
+      book.summary = req.body.summary,
+      book.availability = req.body.availability;
+      book.cite = req.body.cite;
+      book.expiration = req.body.expiration;
+    
+      if(req.file){
+        book.image = req.file.filename;
+      }
+    
+      res.status(200).send(house);
+    });
+    
+    app.delete("/api/books/:id", (req,res)=>{
+      const book = books.find((book)=>book.id ===parseInt(req.params.id));
+    
+      if(!book){
+        res.status(404).send("The book with the provided id was not found");
+        return;
+      }
+    
+      const index = books.indexOf(book);
+      books.splice(index,1);
+      res.status(200).send(book);
+    });
+
 const validateBook = (book)=>{
       const schema = Joi.object({
         name:Joi.string().min(2).required(),
