@@ -206,7 +206,7 @@ app.put("/api/books/:id", upload.single("image"), (req,res)=>{
         book.image = req.file.filename;
       }
     
-      res.status(200).send(house);
+      res.status(200).send(book);
     });
     
     app.delete("/api/books/:id", (req,res)=>{
@@ -229,7 +229,8 @@ const validateBook = (book)=>{
         summary:Joi.string().min(2).required(),
         availability:Joi.string().min(2).required(),
         cite:Joi.string().min(2).required(),
-        expiration:Joi.string().min(2).required()
+        expiration:Joi.string().min(2).required(),
+        image:Joi.string()
       });
     
       return schema.validate(book);
