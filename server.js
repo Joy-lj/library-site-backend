@@ -45,8 +45,13 @@ app.get("/",(req,res)=>{
 
 app.get("/api/books", async(req,res)=>{
   const books = await Book.find();
-  res.json(books);
+  res.send(books);
 });
+
+app.get("/api/books/:id", async(req,res) => {
+  const book = await Book.findOne({_id:id})
+  res.send(book);
+})
 
 app.post("/api/books", upload.single("image"), async(req, res)=>{    
   const result = validateBook(req.body);
@@ -72,7 +77,7 @@ app.post("/api/books", upload.single("image"), async(req, res)=>{
     
   const newBook = await book.save();
 
-  res.status(200).send(newBook);
+  res.send(newBook);
 });
     
 app.put("/api/books/:id", upload.single("image"), async(req,res)=>{
@@ -98,19 +103,20 @@ app.put("/api/books/:id", upload.single("image"), async(req,res)=>{
     
   const wentThrough = await Book.updateOne({_id:req.params.id}, fieldsToUpdate);
 
-  const book = await Book.findOne({_id:req.params.id});
+  const updatedBook = await Book.findOne({_id:req.params.id});
 
-  res.status(200).send(book);
+  res.send(updatedBook);
 });
     
 app.delete("/api/books/:id", async(req,res)=>{
   const book = await Book.findByIdAndDelete(req.params.id);
 
-  res.status(200).send(book);
+  res.send(book);
 });
 
 const validateBook = (book)=>{
   const schema = Joi.object({
+    _id:Joi.allow(""),
     name:Joi.string().min(2).required(),
     author:Joi.string().min(2).required(),
     summary:Joi.string().min(2).required(),
