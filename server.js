@@ -102,6 +102,7 @@ app.put("/api/books/:id", upload.single("image"), async(req,res)=>{
     name:req.body.name,
     author:req.body.author,
     summary:req.body.summary,
+    themes:req.body.themes,
     availability:req.body.availability,
     cite:req.body.cite,
     expiration:req.body.expiration
