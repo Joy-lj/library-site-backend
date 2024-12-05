@@ -55,8 +55,16 @@ app.get("/api/books/:id", async(req,res) => {
 })
 
 app.post("/api/books", upload.single("image"), async(req, res)=>{    
-  const result = validateBook(req.body);
+  //const result = validateBook(req.body);
     
+  const themes = req.body.themes
+    ? Array.isArray(req.body.themes)
+      ? req.body.themes
+      : req.body.themes.split(",").map((theme) => theme.trim())
+    : [];
+
+  const result = validateBook({ ...req.body, themes });
+
   if(result.error){
     res.status(400).send(result.error.details[0].message);
     console.log("I have an error");
@@ -67,7 +75,7 @@ app.post("/api/books", upload.single("image"), async(req, res)=>{
     name:req.body.name,
     author:req.body.author,
     summary:req.body.summary,
-    themes:req.body.themes || [],
+    themes:themes,
     availability:req.body.availability,
     cite:req.body.cite,
     expiration:req.body.expiration
