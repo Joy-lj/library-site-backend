@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 mongoose
-  .connect("")
+  .connect("mongodb+srv://joy-lj:sZ2XnyPyLq1ENMV8@data.6vp8y.mongodb.net/?retryWrites=true&w=majority&appName=Data")
   .then(() => {
     console.log("connected to mongodb");
   })
@@ -31,6 +31,7 @@ const bookSchema = new mongoose.Schema({
   name:String,
   author:String,
   summary:String,
+  themes:[String],
   availability:String,
   cite:String,
   expiration:String,
@@ -49,7 +50,7 @@ app.get("/api/books", async(req,res)=>{
 });
 
 app.get("/api/books/:id", async(req,res) => {
-  const book = await Book.findOne({_id:id})
+  const book = await Book.findOne({_id:req.params.id})
   res.send(book);
 })
 
@@ -66,6 +67,7 @@ app.post("/api/books", upload.single("image"), async(req, res)=>{
     name:req.body.name,
     author:req.body.author,
     summary:req.body.summary,
+    themes:req.body.themes || [],
     availability:req.body.availability,
     cite:req.body.cite,
     expiration:req.body.expiration
@@ -120,6 +122,7 @@ const validateBook = (book)=>{
     name:Joi.string().min(2).required(),
     author:Joi.string().min(2).required(),
     summary:Joi.string().min(2).required(),
+    themes:Joi.array().items(Joi.string()).optional(),
     availability:Joi.string().min(2).required(),
     cite:Joi.string().min(2).required(),
     expiration:Joi.string().min(2).required(),
