@@ -131,7 +131,7 @@ const validateBook = (book)=>{
     name:Joi.string().min(2).required(),
     author:Joi.string().min(2).required(),
     summary:Joi.string().min(2).required(),
-    themes:Joi.array().items(Joi.string().min(1)).required(),
+    themes:Joi.array().items(Joi.string().min(3)).required(),
     availability:Joi.string().min(2).required(),
     cite:Joi.string().min(2).required(),
     expiration:Joi.string().min(2).required(),
