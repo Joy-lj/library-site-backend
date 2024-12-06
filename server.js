@@ -31,7 +31,7 @@ const bookSchema = new mongoose.Schema({
   name:String,
   author:String,
   summary:String,
-  themes:String,
+  themes:Array,
   availability:String,
   cite:String,
   expiration:String,
@@ -55,6 +55,10 @@ app.get("/api/books/:id", async(req,res) => {
 })
 
 app.post("/api/books", upload.single("image"), async(req, res)=>{    
+  if (req.body.themes && typeof req.body.themes === "string") {
+    req.body.themes = req.body.themes.split(";").map((theme) => theme.trim());
+  }
+
   const result = validateBook(req.body);
 
   if(result.error){
@@ -83,6 +87,10 @@ app.post("/api/books", upload.single("image"), async(req, res)=>{
 });
     
 app.put("/api/books/:id", upload.single("image"), async(req,res)=>{
+  if (req.body.themes && typeof req.body.themes === "string") {
+    req.body.themes = req.body.themes.split(";").map((theme) => theme.trim());
+  }
+  
   const result = validateBook(req.body);
     
   if(result.error){
@@ -123,7 +131,7 @@ const validateBook = (book)=>{
     name:Joi.string().min(2).required(),
     author:Joi.string().min(2).required(),
     summary:Joi.string().min(2).required(),
-    themes:Joi.string().min(2).required(),
+    themes:Joi.array().items(Joi.string().min(1)).required(),
     availability:Joi.string().min(2).required(),
     cite:Joi.string().min(2).required(),
     expiration:Joi.string().min(2).required(),
