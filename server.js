@@ -88,9 +88,9 @@ app.post("/api/books", upload.single("image"), async(req, res)=>{
     
 app.put("/api/books/:id", upload.single("image"), async(req,res)=>{
   if (req.body.themes && typeof req.body.themes === "string") {
-    req.body.themes = req.body.themes.split(";").map((theme) => theme.trim());
+    req.body.themes = req.body.themes.split(",").map((theme) => theme.trim());
   }
-  
+
   const result = validateBook(req.body);
     
   if(result.error){
